@@ -7,17 +7,18 @@ import java.awt.event.FocusEvent;
 
 public class UIInterface extends JFrame
 {
-    private final JButton addB = new JButton();
-    private final JButton showAll = new JButton();
-    private final JButton deleteButton = new JButton();
+    JButton addB = new JButton();
+    JButton showAll = new JButton();
+    JButton deleteButton = new JButton();
+    JButton playNow = new JButton();
 
-    private final JTextField nameFd = new JTextField("name", 20);
-    private final JTextField playersMinFd = new JTextField("players min", 10);
-    private final JTextField playersMaxFd = new JTextField("players max", 10);
-    private final JTextField gameTimeFd = new JTextField("game time", 10);
-    private final JTextField gameTypeFd = new JTextField("game type", 10);
-    private final JTextField gameSubTypeFd = new JTextField("game subtype", 20);
-    private final JTextField complexityFd = new JTextField("complexity", 20);
+    JTextField nameFd = new JTextField("name", 20);
+    JTextField playersMinFd = new JTextField("players min", 10);
+    JTextField playersMaxFd = new JTextField("players max", 10);
+    JTextField gameTimeFd = new JTextField("game time", 10);
+    JTextField gameTypeFd = new JTextField("game type", 10);
+    JTextField gameSubTypeFd = new JTextField("game subtype", 20);
+    JTextField complexityFd = new JTextField("complexity", 20);
     JTextArea outputF = new JTextArea(200,7);
 
     JPanel panelNewGame = new JPanel(new GridLayout());
@@ -33,9 +34,8 @@ public class UIInterface extends JFrame
         this.setSize(1500, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(makeTextPanel(panelNewGame, nameFd, playersMinFd, playersMaxFd, gameTimeFd, gameTypeFd, gameSubTypeFd,complexityFd));
-        this.add(addButton());
+        this.add(makeButtonPanel(buttonsPanel, addButton(), showAllButton(), playNowButton(), deleteButton()));
         this.add(outputPanel);
-        this.add(makeButtonPanel(buttonsPanel, showAllButton(), deleteButton()));
         this.setResizable(true);
         this.setLayout(new GridLayout(7, 5));
         this.setVisible(true);
@@ -93,7 +93,6 @@ public class UIInterface extends JFrame
     private JButton addButton()
     {
         addB.setText("ADD NEW GAME");
-        addB.setPreferredSize(new Dimension(60,40));
         try {
             addB.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -127,7 +126,6 @@ public class UIInterface extends JFrame
     private JButton deleteButton()
     {
         deleteButton.setText("DELETE GAME");
-        deleteButton.setPreferredSize(new Dimension(60,40));
         try {
             deleteButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -148,8 +146,6 @@ public class UIInterface extends JFrame
     private JButton showAllButton()
     {
         showAll.setText("SHOW ALL");
-        showAll.setPreferredSize(new Dimension(10,40));
-        showAll.setBounds(40, 40, 100, 30);
         try {
             showAll.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -164,5 +160,25 @@ public class UIInterface extends JFrame
         }
 
         return showAll;
+    }
+
+    private JButton playNowButton()
+    {
+        playNow.setText("PLAY NOW");
+
+        try {
+            playNow.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    outputF.setText("");
+                    boardGamesDB.playNow(playersMinFd.getText(), gameTimeFd.getText());
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            printToOutput("Something goes wrong\nCheck input\n");
+        }
+
+        return playNow;
     }
 }
